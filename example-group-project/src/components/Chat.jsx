@@ -1,10 +1,27 @@
+import { useEffect, useState } from "react";
+import { getReq } from "../utils/api";
+
 const Chat = () => {
-  //LOGIC FOR GETTING AND DISPLAYING CHAT FROM API
+  const [commentsList, setCommentsList] = useState([]);
+
+  useEffect(() => {
+    getReq(`/api/messages`).then((res) => {
+      console.log(res);
+      setCommentsList(res);
+    });
+  }, []);
 
   return (
     <div>
       <ul>
-        <li>This is where the chat would go</li>
+        {commentsList.map((comment) => {
+          return (
+            <li key={comment.comment_id}>
+              <p>{comment.body}</p>
+              <p>{comment.username}</p>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
